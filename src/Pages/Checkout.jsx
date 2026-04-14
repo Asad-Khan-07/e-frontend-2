@@ -378,7 +378,13 @@ function CheckoutForm() {
 
               <div className="flex gap-3 mt-6">
                 <button onClick={() => setStep(1)} className="px-6 py-4 border border-white/10 hover:border-white/30 text-white font-bold rounded-2xl transition-colors">← Back</button>
-                <button onClick={() => setStep(3)} className="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01]">Review Order →</button>
+                {form.payMethod === 'cod' ? (
+                  <button onClick={() => setStep(3)} className="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01]">Review Order →</button>
+                ) : (
+                  <button onClick={handlePlaceOrder} disabled={placing} className="flex-1 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 disabled:cursor-not-allowed text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01]">
+                    {placing ? '💳 Payment Processing...' : `💳 Pay · Rs ${total.toLocaleString()}`}
+                  </button>
+                )}
               </div>
             </div>
           )}
