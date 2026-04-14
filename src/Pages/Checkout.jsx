@@ -120,7 +120,7 @@ function CheckoutForm() {
           setPlacing(false)
           return
         }
-        const intentRes = await createPaymentIntent({ amount: total, currency: 'usd' })
+        const intentRes = await createPaymentIntent({ amount: total, currency: 'pkr' })
         if (!intentRes?.clientSecret) {
           setOrderError('Payment start nahi ho sakti. Dobara try karein.')
           setPlacing(false)
@@ -154,7 +154,8 @@ function CheckoutForm() {
         }
       }
     } catch (err) {
-      setOrderError('Network error. Internet check karein aur dobara try karein.')
+      console.error('Payment error:', err)
+      setOrderError(`Network error: ${err.message || 'Internet check karein aur dobara try karein.'}`)
     } finally {
       setPlacing(false)
     }
