@@ -20,14 +20,15 @@ function CheckoutForm() {
   const stripe = useStripe()
   const elements = useElements()
   const { theme } = useTheme()
+  const isLight = theme === 'light'
 
   const cardElementStyle = {
     style: {
       base: {
-        color: theme === 'light' ? '#0f172a' : '#ffffff',
+        color: isLight ? '#0f172a' : '#ffffff',
         fontFamily: 'inherit',
         fontSize: '14px',
-        '::placeholder': { color: theme === 'light' ? 'rgba(15,23,42,0.5)' : 'rgba(255,255,255,0.3)' },
+        '::placeholder': { color: isLight ? 'rgba(15,23,42,0.5)' : 'rgba(255,255,255,0.3)' },
         backgroundColor: 'transparent',
       },
       invalid: { color: '#f87171' },
@@ -74,9 +75,9 @@ function CheckoutForm() {
 
   const handleInput = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
 
-  const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/30 focus:outline-none focus:border-amber-400/60 transition-colors"
-  const labelCls = "block text-white/50 text-xs font-medium mb-1.5 uppercase tracking-wide text-start"
-  const stripeBoxCls = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus-within:border-amber-400/60 transition-colors"
+  const inputCls = `w-full rounded-xl px-4 py-3 text-sm transition-colors focus:outline-none ${isLight ? 'bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-500 focus:border-amber-400/50' : 'bg-white/5 border border-white/10 text-white placeholder-white/30 focus:border-amber-400/60'}`
+  const labelCls = `block text-xs font-medium mb-1.5 uppercase tracking-wide text-start ${isLight ? 'text-slate-600' : 'text-white/50'}`
+  const stripeBoxCls = `w-full rounded-xl px-4 py-3.5 text-sm focus-within:border-amber-400/60 transition-colors ${isLight ? 'bg-slate-100 border border-slate-300 text-slate-900' : 'bg-white/5 border border-white/10 text-white'}`
 
   const buildOrderData = (paymentMethod, paymentStatus = 'unpaid', transactionId = '') => ({
     customerName: `${form.firstName} ${form.lastName}`.trim(),
@@ -276,10 +277,17 @@ function CheckoutForm() {
                   <div><label className={labelCls}>City</label><input name="city" value={form.city} onChange={handleInput} className={inputCls} placeholder="Karachi" /></div>
                   <div>
                     <label className={labelCls}>Province</label>
-                    <select name="province" value={form.province} onChange={handleInput} className={inputCls + " cursor-pointer"}>
-                      <option value="" className="bg-[#0f0f0f]">Select</option>
-                      {['Sindh','Punjab','KPK','Balochistan','Gilgit-Baltistan','AJK'].map(p => <option key={p} value={p} className="bg-[#0f0f0f]">{p}</option>)}
-                    </select>
+                    <select
+                    name="province"
+                    value={form.province}
+                    onChange={handleInput}
+                    className={`${inputCls} cursor-pointer ${isLight ? 'bg-slate-100 text-slate-900' : ''}`}
+                  >
+                    <option value="" className={isLight ? 'text-slate-500 bg-white' : 'text-white bg-[#0f0f0f]'}>Select</option>
+                    {['Sindh','Punjab','KPK','Balochistan','Gilgit-Baltistan','AJK'].map(p => (
+                      <option key={p} value={p} className={isLight ? 'text-slate-900 bg-white' : 'text-white bg-[#0f0f0f]'}>{p}</option>
+                    ))}
+                  </select>
                   </div>
                   <div><label className={labelCls}>ZIP Code</label><input name="zip" value={form.zip} onChange={handleInput} className={inputCls} placeholder="75600" /></div>
                 </div>
