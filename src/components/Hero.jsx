@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useTheme } from '../context/context'
 import { TypeAnimation } from 'react-type-animation'
 import { Plus, Star } from 'lucide-react'
-import CountUp from '../components/CountUp'
+import CountUp from '../components/Countup'
 
 function Hero() {
   const { theme } = useTheme()
