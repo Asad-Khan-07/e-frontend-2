@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getProducts, createProduct, updateProduct, deleteProduct, getCategories } from '../../services/api'
 import { useCart, useTheme } from '../../context/context'
+import { Plus, X, Pencil, Trash2 } from 'lucide-react'
 
 const EMPTY = {
   name: '', price: '', originalPrice: '', category: '',
@@ -19,10 +20,9 @@ export default function AdminProducts() {
   const [search, setSearch] = useState('')
   const { convertToUSD } = useCart()
   const { theme } = useTheme()
+  const isLight = theme === 'light'
 
-  useEffect(() => {
-    loadData()
-  }, [])
+  useEffect(() => { loadData() }, [])
 
   const loadData = async () => {
     setLoading(true)
@@ -91,7 +91,7 @@ export default function AdminProducts() {
           onClick={openAdd}
           className="bg-amber-400 hover:bg-amber-300 text-black font-bold px-5 py-2.5 rounded-xl transition-colors flex items-center gap-2"
         >
-          <span>+</span> Add Product
+          <Plus size={16} strokeWidth={3} /> Add Product
         </button>
       </div>
 
@@ -124,11 +124,11 @@ export default function AdminProducts() {
             </thead>
             <tbody>
               {filtered.map(p => (
-                <tr key={p._id} className="border-b border-white/5 hover:bg-white/3 transition-colors">
+                <tr key={p._id} className={`border-b shadow-2xl ${isLight ? 'shadow-slate-300' : 'shadow-amber-300'}  hover:scale-95   border-white/5 hover:bg-white/3 transition-all`}>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <img src={p.image} alt={p.name} className="w-10 h-10 rounded-lg object-cover bg-white/10" />
-                      <div className=' text-start'>
+                      <div className='text-start'>
                         <p className="font-medium text-sm">{p.name}</p>
                         {p.badge && <span className="text-xs text-amber-400">{p.badge}</span>}
                       </div>
@@ -149,15 +149,15 @@ export default function AdminProducts() {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => openEdit(p)}
-                        className="bg-white/5 hover:bg-amber-400/10 border border-white/10 hover:border-amber-400/20 text-white/60 hover:text-amber-400 px-3 py-1.5 rounded-lg text-xs transition-all"
+                        className="bg-white/5 hover:bg-amber-400/10 border border-white/10 hover:border-amber-400/20 text-white/60 hover:text-amber-400 px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5"
                       >
-                        Edit
+                        <Pencil size={12} /> Edit
                       </button>
                       <button
                         onClick={() => handleDelete(p._id)}
-                        className="bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 text-white/60 hover:text-red-400 px-3 py-1.5 rounded-lg text-xs transition-all"
+                        className="bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/20 text-white/60 hover:text-red-400 px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5"
                       >
-                        Delete
+                        <Trash2 size={12} /> Delete
                       </button>
                     </div>
                   </td>
@@ -177,7 +177,9 @@ export default function AdminProducts() {
           <div className={`${theme === 'light' ? 'bg-slate-100 border-slate-200' : 'bg-[#111] border-white/10'} rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto`}>
             <div className="flex items-center justify-between p-6 border-b border-white/10">
               <h3 className="text-lg font-bold">{editing ? 'Edit Product' : 'Add New Product'}</h3>
-              <button onClick={() => setModal(false)} className="text-white/40 hover:text-white text-xl">✕</button>
+              <button onClick={() => setModal(false)} className="text-white/40 hover:text-white">
+                <X size={20} />
+              </button>
             </div>
             <div className="p-6 grid grid-cols-2 gap-4">
               {[
@@ -216,7 +218,7 @@ export default function AdminProducts() {
                 <label className="text-white/60 text-xs mb-1 block">Category</label>
                 <select
                   value={form.category || ''}
-                  onChange={e => setForm({ ...form, category:   e.target.value })}
+                  onChange={e => setForm({ ...form, category: e.target.value })}
                   className={`w-full ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : 'bg-[#1a1a1a] border-white/10 text-white'} rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400/50 transition-colors`}
                 >
                   <option value="">Select category</option>

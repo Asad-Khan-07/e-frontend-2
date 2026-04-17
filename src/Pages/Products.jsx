@@ -7,6 +7,8 @@ import { ClipLoader } from 'react-spinners'
 function ProductCard({ product }) {
   const { cart, setCart } = useCart()
   const { theme } = useTheme()
+    const isLight = theme === 'light'
+
   const { convertToUSD } = useCart()
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
 
@@ -25,7 +27,7 @@ function ProductCard({ product }) {
 
   return (
     <Link to={`/products/${product._id}`} className="group block">
-      <div className="relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 hover:border-amber-400/40 transition-all duration-500 hover:-translate-y-1">
+      <div className={`relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 hover:border-amber-400/40 transition-all duration-500 hover:-translate-y-1 ${isLight ? 'hover:shadow-[0_0_15px_5px_#000000]' : 'hover:shadow-[0_0_15px_5px_#fcd34d]'} `}>
         <div className="relative h-64 overflow-hidden">
           <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -33,7 +35,7 @@ function ProductCard({ product }) {
             <span className="absolute top-3 left-3 bg-amber-400 text-black text-xs font-bold px-2 py-1 rounded-full">{product.badge}</span>
           )}
           <span className="absolute top-3 right-3 bg-red-500/90 text-white text-xs font-bold px-2 py-1 rounded-full">-{discount}%</span>
-          <div className="absolute bottom-3 left-3 right-3 translate-y-8 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+          <div className="absolute bottom-3 left-3 right-3 -translate-y-20 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
             <button onClick={addToCart} className="w-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm py-2 rounded-xl transition-colors">
               Quick Add
             </button>

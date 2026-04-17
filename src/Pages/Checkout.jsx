@@ -11,6 +11,10 @@ import {
 } from '@stripe/react-stripe-js'
 import { useCart, useTheme } from '../context/context'
 import { placeOrder, createPaymentIntent, confirmStripePayment } from '../services/api'
+import {
+  Banknote, CheckLine, CreditCard, DollarSign, Lock,
+  MoveLeft, MoveRight, Package, PartyPopper, Pin, TestTube, XCircle
+} from 'lucide-react'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
 
@@ -171,17 +175,35 @@ function CheckoutForm() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h1 className="text-4xl font-black mb-3">Order Placed! 🎉</h1>
+        <h1 className="text-4xl font-black mb-3 flex items-center justify-center gap-2">
+          Order Placed! <PartyPopper className="text-amber-400" size={32} />
+        </h1>
         <p className="text-white/50 mb-2">Thank you, <span className="text-white font-bold">{form.firstName || 'Customer'}</span>!</p>
         <p className="text-white/40 text-sm mb-2">Confirmation: <span className="text-amber-400">{form.email}</span></p>
-        <p className="text-white/30 text-xs mb-8">
-          {form.payMethod === 'stripe' ? '✅ Card payment successful — processed by Stripe' : '💵 Cash on Delivery — pay upon delivery'}
+        <p className="text-white/30 text-xs mb-8 flex items-center justify-center gap-1">
+          {form.payMethod === 'stripe'
+            ? <><CheckLine size={16} /> Card payment successful — processed by Stripe</>
+            : <><Banknote size={16} /> Cash on Delivery — pay upon delivery</>}
         </p>
         <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-8 text-left space-y-2">
-          <div className="flex justify-between text-sm"><span className="text-white/40">Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-white/40">Shipping</span><span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-white/40">Discount</span><span className="text-green-400">-${discount.toFixed(2)}</span></div>
-          <div className="flex justify-between font-black text-amber-400 border-t border-white/10 pt-2 mt-2"><span>Total</span><span>${total.toFixed(2)}</span></div>
+          <div className="flex justify-between text-sm">
+            <span className="text-white/40">Subtotal</span>
+            <span className="flex items-center"><DollarSign size={18} />{subtotal.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-white/40">Shipping</span>
+            <span className={`flex items-center ${shipping === 0 ? 'text-green-400' : ''}`}>
+              {shipping === 0 ? 'Free' : <><DollarSign size={18} />{shipping.toFixed(2)}</>}
+            </span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-white/40">Discount</span>
+            <span className="text-green-400 flex items-center">-<DollarSign size={18} />{discount.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between font-black text-amber-400 border-t border-white/10 pt-2 mt-2">
+            <span>Total</span>
+            <span className="flex items-center"><DollarSign size={18} />{total.toFixed(2)}</span>
+          </div>
         </div>
         <Link to="/" className="bg-amber-400 text-black font-black px-8 py-4 rounded-full hover:bg-amber-300 transition-colors inline-block">Back to Home</Link>
       </div>
@@ -196,7 +218,7 @@ function CheckoutForm() {
           <div key={s} className="flex items-center">
             <button onClick={() => i < step && setStep(i)} className="flex flex-col items-center gap-1">
               <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${i < step ? 'bg-green-500 text-white' : i === step ? 'bg-amber-400 text-black' : 'bg-white/10 text-white/30'}`}>
-                {i < step ? <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg> : i + 1}
+                {i < step ? <CheckLine /> : i + 1}
               </div>
               <span className={`text-xs font-medium hidden sm:block ${i === step ? 'text-amber-400' : i < step ? 'text-green-400' : 'text-white/30'}`}>{s}</span>
             </button>
@@ -215,7 +237,7 @@ function CheckoutForm() {
               {cart.length === 0 ? (
                 <div className="text-center py-20 text-white/40">
                   <p className="text-xl mb-4">Your cart is empty</p>
-                  <Link to="/products" className="text-amber-400 hover:underline">Browse Products →</Link>
+                  <Link to="/products" className="text-amber-400 hover:underline flex justify-center gap-1">Browse Products <MoveRight className='mt-0.5' /></Link>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -244,8 +266,8 @@ function CheckoutForm() {
                             <button onClick={() => updateQty(item.cartItemId, +1)} className="w-8 h-8 flex items-center justify-center hover:bg-white/10 transition-colors text-lg">+</button>
                           </div>
                           <div className="text-right">
-                            <p className="text-amber-400 font-black">${(convertToUSD(item.price * item.quantity)).toFixed(2)}</p>
-                            {item.quantity > 1 && <p className="text-white/30 text-xs">${convertToUSD(item.price).toFixed(2)} each</p>}
+                            <p className="text-amber-400 font-black flex items-center gap-1"><DollarSign size={18} />{(convertToUSD(item.price * item.quantity)).toFixed(2)}</p>
+                            {item.quantity > 1 && <p className="text-white/30 text-xs flex items-center gap-1"><DollarSign size={15} />{convertToUSD(item.price).toFixed(2)} each</p>}
                           </div>
                         </div>
                       </div>
@@ -253,8 +275,8 @@ function CheckoutForm() {
                   ))}
                 </div>
               )}
-              <button onClick={() => setStep(1)} disabled={cart.length === 0} className="mt-6 w-full bg-amber-400 hover:bg-amber-300 disabled:opacity-40 disabled:cursor-not-allowed text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01]">
-                Shipping Info →
+              <button onClick={() => setStep(1)} disabled={cart.length === 0} className="flex items-center justify-center gap-1 mt-6 w-full bg-amber-400 hover:bg-amber-300 shadow-2xl shadow-amber-300 disabled:opacity-40 disabled:cursor-not-allowed text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01]">
+                Shipping Info <MoveRight size={18} className='mt-1' />
               </button>
             </div>
           )}
@@ -277,17 +299,12 @@ function CheckoutForm() {
                   <div><label className={labelCls}>City</label><input name="city" value={form.city} onChange={handleInput} className={inputCls} placeholder="Karachi" /></div>
                   <div>
                     <label className={labelCls}>Province</label>
-                    <select
-                    name="province"
-                    value={form.province}
-                    onChange={handleInput}
-                    className={`${inputCls} cursor-pointer ${isLight ? 'bg-slate-100 text-slate-900' : ''}`}
-                  >
-                    <option value="" className={isLight ? 'text-slate-500 bg-white' : 'text-white bg-[#0f0f0f]'}>Select</option>
-                    {['Sindh','Punjab','KPK','Balochistan','Gilgit-Baltistan','AJK'].map(p => (
-                      <option key={p} value={p} className={isLight ? 'text-slate-900 bg-white' : 'text-white bg-[#0f0f0f]'}>{p}</option>
-                    ))}
-                  </select>
+                    <select name="province" value={form.province} onChange={handleInput} className={`${inputCls} cursor-pointer ${isLight ? 'bg-slate-100 text-slate-900' : ''}`}>
+                      <option value="" className={isLight ? 'text-slate-500 bg-white' : 'text-white bg-[#0f0f0f]'}>Select</option>
+                      {['Sindh', 'Punjab', 'KPK', 'Balochistan', 'Gilgit-Baltistan', 'AJK'].map(p => (
+                        <option key={p} value={p} className={isLight ? 'text-slate-900 bg-white' : 'text-white bg-[#0f0f0f]'}>{p}</option>
+                      ))}
+                    </select>
                   </div>
                   <div><label className={labelCls}>ZIP Code</label><input name="zip" value={form.zip} onChange={handleInput} className={inputCls} placeholder="75600" /></div>
                 </div>
@@ -295,9 +312,24 @@ function CheckoutForm() {
                   <label className={labelCls}>Delivery Method</label>
                   <div className="space-y-3">
                     {[
-                      { id: 'standard', label: 'Standard Delivery', sub: '5–7 business days', price: subtotal > 36 ? 'Free' : `$${convertToUSD(299).toFixed(2)}` },
-                      { id: 'express', label: 'Express Delivery', sub: '2–3 business days', price: `$${convertToUSD(599).toFixed(2)}` },
-                      { id: 'same', label: 'Same Day (Karachi only)', sub: 'Order before 2 PM', price: `$${convertToUSD(999).toFixed(2)}` },
+                      {
+                        id: 'standard',
+                        label: 'Standard Delivery',
+                        sub: '5–7 business days',
+                        price: subtotal > 36 ? 'Free' : <span className="flex items-center gap-0.5"><DollarSign size={13} strokeWidth={2} />{convertToUSD(299).toFixed(2)}</span>,
+                      },
+                      {
+                        id: 'express',
+                        label: 'Express Delivery',
+                        sub: '2–3 business days',
+                        price: <span className="flex items-center gap-0.5"><DollarSign size={13} strokeWidth={2} />{convertToUSD(599).toFixed(2)}</span>,
+                      },
+                      {
+                        id: 'same',
+                        label: 'Same Day (Karachi only)',
+                        sub: 'Order before 2 PM',
+                        price: <span className="flex items-center gap-0.5"><DollarSign size={13} strokeWidth={2} />{convertToUSD(999).toFixed(2)}</span>,
+                      },
                     ].map(opt => (
                       <label key={opt.id} className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${form.delivery === opt.id ? 'border-amber-400/60 bg-amber-400/5' : 'border-white/10 bg-white/5 hover:border-white/20'}`}>
                         <div className="flex items-center gap-3">
@@ -311,8 +343,8 @@ function CheckoutForm() {
                 </div>
               </div>
               <div className="flex gap-3 mt-6">
-                <button onClick={() => setStep(0)} className="px-6 py-4 border border-white/10 hover:border-white/30 text-white font-bold rounded-2xl transition-colors">← Back</button>
-                <button onClick={() => setStep(2)} className="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01]">Payment →</button>
+                <button onClick={() => setStep(0)} className="px-6 py-4 border hover:shadow-2xl shadow-amber-300 border-amber-300 text-white font-bold rounded-2xl transition-all hover:scale-[1.05] flex items-center gap-1"><MoveLeft size={18} className='mt-1' /> Back</button>
+                <button onClick={() => setStep(2)} className="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-black py-4 shadow-2xl shadow-amber-300 rounded-2xl text-lg transition-all hover:scale-[1.01] flex items-center justify-center gap-1">Payment <MoveRight size={18} className='mt-1' /></button>
               </div>
             </div>
           )}
@@ -323,12 +355,22 @@ function CheckoutForm() {
               <h2 className="text-2xl font-black mb-6">Payment Method</h2>
               <div className="flex gap-3 mb-6">
                 {[
-                  { id: 'stripe', label: '💳 Credit / Debit Card', sub: 'Visa, Mastercard — Stripe se secure' },
-                  { id: 'cod',    label: '💵 Cash on Delivery',    sub: 'Delivery ke waqt payment' },
+                  {
+                    id: 'stripe',
+                    icon: <CreditCard size={18} />,
+                    label: 'Credit / Debit Card',
+                    sub: 'Visa, Mastercard — Stripe se secure',
+                  },
+                  {
+                    id: 'cod',
+                    icon: <Banknote size={18} />,
+                    label: 'Cash on Delivery',
+                    sub: 'Delivery ke waqt payment',
+                  },
                 ].map(m => (
                   <button key={m.id} onClick={() => setForm(p => ({ ...p, payMethod: m.id }))}
                     className={`flex-1 px-4 py-4 rounded-xl border text-sm font-medium transition-all text-left ${form.payMethod === m.id ? 'border-amber-400/60 bg-amber-400/10 text-amber-400' : 'border-white/10 bg-white/5 text-white/50 hover:border-white/20 hover:text-white'}`}>
-                    <p className="font-bold">{m.label}</p>
+                    <p className="font-bold flex items-center gap-2">{m.icon}{m.label}</p>
                     <p className="text-xs opacity-60 mt-0.5">{m.sub}</p>
                   </button>
                 ))}
@@ -337,7 +379,7 @@ function CheckoutForm() {
               {form.payMethod === 'stripe' && (
                 <div className="space-y-4">
                   <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-3">
-                    <p className="text-blue-400 text-xs">🔒 Powered by Stripe — your card data is encrypted and secure</p>
+                    <p className="text-blue-400 text-xs flex items-center gap-1 justify-center"><Lock size={12} /> Powered by Stripe — your card data is encrypted and secure</p>
                   </div>
                   <div>
                     <label className={labelCls}>Cardholder Name</label>
@@ -358,7 +400,7 @@ function CheckoutForm() {
                     </div>
                   </div>
                   <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-white/40 space-y-1">
-                    <p className="font-bold text-white/60">🧪 Test card:</p>
+                    <p className="font-bold text-white/60 flex items-center gap-1 justify-center"><TestTube size={18} />Test card:</p>
                     <p>Number: <span className="font-mono text-white/70">4242 4242 4242 4242</span></p>
                     <p>Expiry: <span className="font-mono text-white/70">12/29</span> &nbsp; CVV: <span className="font-mono text-white/70">123</span></p>
                   </div>
@@ -367,17 +409,17 @@ function CheckoutForm() {
 
               {form.payMethod === 'cod' && (
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-4xl">💵</span>
+                  <div className="flex items-center justify-center flex-col gap-3">
+                    <Banknote size={25} />
                     <div>
                       <p className="font-bold">Cash on Delivery</p>
                       <p className="text-white/40 text-sm">Pay on delivery</p>
                     </div>
                   </div>
                   <div className="bg-amber-400/10 border border-amber-400/20 rounded-xl p-4 space-y-2">
-                    <p className="text-amber-400 text-sm font-bold">📌 Important:</p>
+                    <p className="text-amber-400 text-sm font-bold flex justify-center"><Pin /> Important:</p>
                     <ul className="text-white/50 text-sm space-y-1 list-disc list-inside">
-                      <li>Exact change rakhein: <span className="font-bold text-white">${total.toFixed(2)}</span></li>
+                      <li>Exact change rakhein: <span className="font-bold text-white flex items-center gap-0.5 inline-flex"><DollarSign size={14} />{total.toFixed(2)}</span></li>
                       <li>Delivery will arrive in 5-7 business days</li>
                       <li>To cancel your order, go to your profile</li>
                     </ul>
@@ -386,12 +428,16 @@ function CheckoutForm() {
               )}
 
               <div className="flex gap-3 mt-6">
-                <button onClick={() => setStep(1)} className="px-6 py-4 border border-white/10 hover:border-white/30 text-white font-bold rounded-2xl transition-colors">← Back</button>
+                <button onClick={() => setStep(1)} className="px-6 py-4 border border-white/10 hover:border-white/30 text-white font-bold rounded-2xl transition-colors flex items-center gap-1 hover:shadow-2xl shadow-amber-300"><MoveLeft size={18} className='mt-1' /> Back</button>
                 {form.payMethod === 'cod' ? (
-                  <button onClick={() => setStep(3)} className="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01]">Review Order →</button>
+                  <button onClick={() => setStep(3)} className="flex-1 bg-amber-400 hover:bg-amber-300 text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01] flex items-center justify-center gap-1 shadow-2xl shadow-amber-300">Review Order <MoveRight size={18} className='mt-1' /></button>
                 ) : (
-                  <button onClick={handlePlaceOrder} disabled={placing} className="flex-1 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 disabled:cursor-not-allowed text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01]">
-                    {placing ? '💳 Payment Processing...' : `💳 Pay · $${total.toFixed(2)}`}
+                  <button onClick={handlePlaceOrder} disabled={placing} className="flex-1 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 disabled:cursor-not-allowed text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01] shadow-2xl shadow-amber-300 flex items-center justify-center gap-1.5">
+                    {placing ? (
+                      <><CreditCard size={18} /> Payment Processing...</>
+                    ) : (
+                      <><CreditCard size={18} /> Pay <DollarSign size={16} />{total.toFixed(2)}</>
+                    )}
                   </button>
                 )}
               </div>
@@ -411,7 +457,9 @@ function CheckoutForm() {
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
                   <div className="flex items-center justify-between mb-3"><h3 className="font-bold text-sm">Payment</h3><button onClick={() => setStep(2)} className="text-amber-400 text-xs hover:underline">Edit</button></div>
-                  <p className="text-white/60 text-sm">{form.payMethod === 'stripe' ? '💳 Credit / Debit Card (Stripe)' : '💵 Cash on Delivery'}</p>
+                  <p className="text-white/60 text-sm flex items-center gap-2">
+                    {form.payMethod === 'stripe' ? <><CreditCard size={15} /> Credit / Debit Card (Stripe)</> : <><Banknote size={15} /> Cash on Delivery</>}
+                  </p>
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
                   <h3 className="font-bold text-sm mb-4">Items ({cart.length})</h3>
@@ -420,7 +468,10 @@ function CheckoutForm() {
                       <div key={item.cartItemId} className="flex items-center gap-3">
                         <img src={item.image} alt={item.name} className="w-12 h-12 rounded-lg object-cover" />
                         <div className="flex-1"><p className="text-sm font-bold">{item.name}</p><p className="text-white/40 text-xs">Size: {item.size || 'N/A'} · Qty: {item.quantity}</p></div>
-                        <span className="text-amber-400 font-bold text-sm">${(convertToUSD(item.price * item.quantity)).toFixed(2)}</span>
+                        <span className="text-amber-400 font-bold text-sm flex items-center">
+                          <DollarSign size={18} />
+                          {(convertToUSD(item.price * item.quantity)).toFixed(2)}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -429,17 +480,25 @@ function CheckoutForm() {
 
               {orderError && (
                 <div className="mt-4 bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-center">
-                  <p className="text-red-400 text-sm">❌ {orderError}</p>
+                  <p className="text-red-400 text-sm flex items-center justify-center gap-1">
+                    <XCircle size={16} /> {orderError}
+                  </p>
                 </div>
               )}
 
               <div className="flex gap-3 mt-6">
-                <button onClick={() => setStep(2)} className="px-6 py-4 border border-white/10 hover:border-white/30 text-white font-bold rounded-2xl transition-colors">← Back</button>
+                <button onClick={() => setStep(2)} className="px-6 py-4 shadow-2xl hover:shadow-amber-300 border border-white/10 hover:border-white/30 text-white font-bold rounded-2xl transition-colors flex items-center gap-1"><MoveLeft size={18} className='mt-1' /> Back</button>
                 <button onClick={handlePlaceOrder} disabled={placing}
-                  className="flex-1 bg-amber-400 hover:bg-amber-300 disabled:opacity-60 disabled:cursor-not-allowed text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01]">
-                  {placing
-                    ? (form.payMethod === 'stripe' ? '💳 Payment Processing...' : '📦 Placing your order...')
-                    : `${form.payMethod === 'stripe' ? '💳 Pay' : '📦 Place Order'} · $${total.toFixed(2)}`}
+                  className="flex-1 bg-amber-400 hover:bg-amber-300 shadow-2xl shadow-amber-300 disabled:opacity-60 disabled:cursor-not-allowed text-black font-black py-4 rounded-2xl text-lg transition-all hover:scale-[1.01] flex items-center justify-center gap-1.5">
+                  {placing ? (
+                    form.payMethod === 'stripe'
+                      ? <><CreditCard size={18} /> Payment Processing...</>
+                      : <><Package size={18} /> Placing your order...</>
+                  ) : (
+                    form.payMethod === 'stripe'
+                      ? <><CreditCard size={18} /> Pay <DollarSign size={16} />{total.toFixed(2)}</>
+                      : <><Banknote size={18} /> Place Order <DollarSign size={16} />{total.toFixed(2)}</>
+                  )}
                 </button>
               </div>
             </div>
@@ -461,20 +520,35 @@ function CheckoutForm() {
                     <p className="text-sm font-bold truncate">{item.name}</p>
                     <p className="text-white/40 text-xs">{item.size}</p>
                   </div>
-                  <span className="text-sm font-bold shrink-0">${(convertToUSD(item.price * item.quantity)).toFixed(2)}</span>
+                  <span className="text-sm font-bold shrink-0 flex items-center gap-1">
+                    <DollarSign size={18} />
+                    {(convertToUSD(item.price * item.quantity)).toFixed(2)}
+                  </span>
                 </div>
               ))}
             </div>
             <div className="border-t border-white/10 pt-4 space-y-2.5">
-              <div className="flex justify-between text-sm"><span className="text-white/40">Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-white/40">Shipping</span><span className={shipping === 0 ? 'text-green-400' : ''}>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-white/40">Discount</span><span className="text-green-400">-${discount.toFixed(2)}</span></div>
+              <div className="flex justify-between text-sm">
+                <span className="text-white/40">Subtotal</span>
+                <span className='flex items-center'><DollarSign size={18} />{subtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-white/40">Shipping</span>
+                <span className={`flex items-center ${shipping === 0 ? 'text-green-400' : ''}`}>
+                  {shipping === 0 ? 'Free' : <><DollarSign size={18} />{shipping.toFixed(2)}</>}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-white/40">Discount</span>
+                <span className="text-green-400 flex items-center">-<DollarSign size={18} />{discount.toFixed(2)}</span>
+              </div>
               <div className="flex justify-between font-black text-lg border-t border-white/10 pt-3 mt-1">
-                <span>Total</span><span className="text-amber-400">${total.toFixed(2)}</span>
+                <span>Total</span>
+                <span className="text-amber-400 flex items-center"><DollarSign size={18} />{total.toFixed(2)}</span>
               </div>
             </div>
             <div className={`mt-4 px-3 py-2 rounded-xl text-xs font-medium flex items-center gap-2 ${form.payMethod === 'stripe' ? 'bg-blue-500/10 border border-blue-500/20 text-blue-400' : 'bg-amber-400/10 border border-amber-400/20 text-amber-400'}`}>
-              {form.payMethod === 'stripe' ? '🔒 Secure payment via Stripe' : '💵 Cash on Delivery selected'}
+              {form.payMethod === 'stripe' ? <><Lock size={14} /> Secure payment via Stripe</> : <><Banknote size={14} /> Cash on Delivery selected</>}
             </div>
           </div>
         </div>

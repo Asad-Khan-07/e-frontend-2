@@ -7,21 +7,21 @@ export default function Navbar() {
   const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem('user') || 'null')
   const navBg = theme === 'dark' ? 'bg-[#0a0a0a]/80 border-white/10 text-white' : 'bg-white/90 border-slate-200 text-slate-900'
-  const linkText = theme === 'dark' ? 'text-white/60 hover:text-white' : 'text-slate-600 hover:text-slate-900'
+  const linkText = theme === 'dark' ? 'text-black hover:text-slate-100' : 'text-black hover:text-white/80'
 
   return (
     <nav className={`sticky top-0 z-50 ${navBg} backdrop-blur-xl`}> 
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="text-xl font-black text-amber-400">
-          LUXE<span className="text-white">STORE</span>
+          Mega<span className="text-white">Mix</span>
         </Link>
 
         {/* Nav links */}
-        <div className="hidden md:flex items-center gap-8">
-          <Link to="/" className={`${linkText} text-sm font-medium transition-colors`}>Home</Link>
-          <Link to="/products" className={`${linkText} text-sm font-medium transition-colors`}>Products</Link>
-          <Link to="/categories" className={`${linkText} text-sm font-medium transition-colors`}>Categories</Link>
+        <div className={`hidden md:flex items-center gap-8 ${theme === 'dark' ? 'bg-amber-300' : 'bg-slate-300/50'}  px-6 py-2 rounded-full`}>
+          <Link to="/" className={`${linkText} text-sm font-medium transition-colors nav-link`}>Home</Link>
+          <Link to="/products" className={`${linkText} text-sm font-medium transition-colors nav-link`}>Products</Link>
+          <Link to="/categories" className={`${linkText} text-sm font-medium transition-colors nav-link`}>Categories</Link>
         </div>
 
         {/* Right side */}

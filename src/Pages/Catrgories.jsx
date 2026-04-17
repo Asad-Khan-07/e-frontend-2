@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { products } from '../data/products'
 import Footer from '../components/Footer'
 import { useCart } from '../context/context'
+import ShopSaleButton from '../components/ShopeButton'
 
 const allCategories = Object.values(
   products.reduce((acc, p) => {
@@ -121,13 +122,13 @@ export default function Categories() {
               <h2 className="text-4xl font-black" style={{ color: '#0f172a' }}>Sale Up To 40% Off</h2>
               <p className="text-lg" style={{ color: 'rgba(15,23,42,0.6)' }}>Limited time offer on selected items. Don't miss out!</p>
             </div>
-            <Link
+            <ShopSaleButton/>
+            {/* <Link
               to="/products"
               className="shrink-0 font-bold px-8 py-4 rounded-full transition-colors"
               style={{ backgroundColor: '#0f172a', color: '#ffffff' }}
             >
-              Shop Sale
-            </Link>
+            </Link> */}
           </div>
         </div>
       </section>

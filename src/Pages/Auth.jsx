@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { userLogin, userRegister } from '../services/api'
 import { useTheme } from '../context/context'
+import { Circle } from 'lucide-react'
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -100,7 +101,7 @@ export default function AuthPage() {
               <label className={`text-sm mb-1 block text-start ${isLight ? 'text-slate-600' : 'text-white/60'}`}>Password</label>
               <input
                 type="password"
-                placeholder="••••••••"
+                placeholder="**********"
                 value={form.password}
                 onChange={e => setForm({ ...form, password: e.target.value })}
                 onKeyDown={e => e.key === 'Enter' && handleSubmit()}
@@ -118,7 +119,7 @@ export default function AuthPage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full mt-6 bg-amber-400 hover:bg-amber-300 disabled:opacity-50 text-black font-bold py-3 rounded-xl transition-colors"
+            className="w-full mt-6 bg-amber-400 hover:bg-amber-300 shadow-2xl shadow-amber-400 hover:shadow-amber-300 disabled:opacity-50 text-black font-bold py-3 rounded-xl transition-colors"
           >
             {loading ? 'Please wait...' : isLogin ? 'Login' : 'Create Account'}
           </button>

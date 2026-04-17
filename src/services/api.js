@@ -33,7 +33,7 @@ export const createCategory = (data) => fetch(`${BASE_URL}/categories`, { method
 export const deleteCategory = (id) => fetch(`${BASE_URL}/categories/${id}`, { method: 'DELETE', headers: getHeaders(true) }).then(r => r.json())
 
 // Orders — FIX: getHeaders(false) add kiya taake auth token bhi jaye
-export const placeOrder = (data) => fetch(`${BASE_URL}/orders`, { method: 'POST', headers: getHeaders(false), body: JSON.stringify(data) }).then(r => r.json())
+export const placeOrder = (data) => fetch(`${BASE_URL }/orders`, { method: 'POST', headers: getHeaders(false), body: JSON.stringify(data) }).then(r => r.json())
 export const getMyOrders = () => fetch(`${BASE_URL}/orders/my`, { headers: getHeaders(false) }).then(r => r.json())
 export const getAllOrders = () => fetch(`${BASE_URL}/orders`, { headers: getHeaders(true) }).then(r => r.json())
 export const updateOrder = (id, data) => fetch(`${BASE_URL}/orders/${id}`, { method: 'PUT', headers: getHeaders(true), body: JSON.stringify(data) }).then(r => r.json())

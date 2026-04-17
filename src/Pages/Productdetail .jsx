@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { getProduct } from '../services/api'
 import { useCart } from '../context/context'
 import { products as localProducts } from '../data/products'
+import { CheckLine, CircleSmall, DollarSign, Lock, Star, Truck, Undo2 } from 'lucide-react'
 
 export default function ProductDetail() {
   const { id } = useParams()
@@ -130,9 +131,10 @@ export default function ProductDetail() {
             <div className="flex items-center gap-3 mb-6">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <svg key={i} className={`w-5 h-5 ${i < Math.floor(product.rating) ? 'text-amber-400' : 'text-white/20'}`} fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
+                  // <svg key={i} className={`w-5 h-5 ${i < Math.floor(product.rating) ? 'text-amber-400' : 'text-white/20'}`} fill="currentColor" viewBox="0 0 20 20">
+                  //   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  // </svg>
+                                    <Star size={20} key={i} className={` ${i < Math.floor(product.rating) ? 'text-amber-400' : 'text-white/20'}`}/>
                 ))}
               </div>
               <span className="text-white font-bold">{product.rating}</span>
@@ -141,12 +143,12 @@ export default function ProductDetail() {
           )}
 
           <div className="flex items-baseline gap-3 mb-8 pb-8 border-b border-white/10">
-            <span className="text-5xl font-black text-amber-400">${convertToUSD(product.price)}</span>
+            <span className="text-5xl font-black text-amber-400 flex items-center "><DollarSign size={40}  />{convertToUSD(product.price)}</span>
             {product.originalPrice && (
               <>
-                <span className="text-white/30 text-xl line-through">${convertToUSD(product.originalPrice)}</span>
-                <span className="bg-red-500/20 text-red-400 text-sm font-bold px-2 py-1 rounded-lg">
-                  Save ${(convertToUSD(product.originalPrice - product.price))}
+                <span className="text-white/30 text-xl line-through flex items-center "><DollarSign size={20}  />{convertToUSD(product.originalPrice)}</span>
+                <span className="bg-red-500/20 text-red-400 text-sm font-bold px-2 py-1 rounded-lg flex items-center gap-1">
+                  Save <DollarSign size={15} />{(convertToUSD(product.originalPrice - product.price))}
                 </span>
               </>
             )}
@@ -200,9 +202,13 @@ export default function ProductDetail() {
           <div className="flex gap-3 mb-8">
             <button
               onClick={handleAddToCart}
-              className={`flex-1 font-bold py-4 rounded-2xl text-lg transition-all ${added ? 'bg-green-500 text-white scale-95' : 'bg-amber-400 hover:bg-amber-300 text-black hover:scale-105 hover:shadow-[0_0_40px_rgba(251,191,36,0.3)]'}`}
+              className={`flex-1 font-bold py-4 rounded-2xl shadow-2xl shadow-amber-300 text-lg transition-all ${added ? 'bg-green-500 text-white scale-95' : 'bg-amber-400 hover:bg-amber-300 text-black hover:scale-105 ]'}`}
             >
-              {added ? '✓ Added to Cart!' : 'Add to Cart'}
+              {added ? (
+  <span className="flex items-center justify-center gap-2">
+    <CheckLine size={20} /> Added to Cart!
+  </span>
+) : 'Add to Cart'}
             </button>
             <button className="px-6 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 rounded-2xl transition-all">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,11 +219,11 @@ export default function ProductDetail() {
 
           <div className="grid grid-cols-3 gap-3 mb-8">
             {[
-              { icon: '🚚', label: 'Free Delivery', sub: 'Over $7.14' },
-              { icon: '↩️', label: 'Easy Returns', sub: '30-day policy' },
-              { icon: '🔒', label: 'Secure Pay', sub: '100% safe' },
+              { icon: <Truck />, label: 'Free Delivery', sub: 'Over $7.14' },
+              { icon: <Undo2 />, label: 'Easy Returns', sub: '30-day policy' },
+              { icon: <Lock />, label: 'Secure Pay', sub: '100% safe' },
             ].map((perk) => (
-              <div key={perk.label} className="bg-white/5 rounded-xl p-3 text-center border border-white/5">
+              <div key={perk.label} className="bg-white/5 rounded-xl p-3 text-center border flex flex-col items-center border-white/5">
                 <div className="text-xl mb-1">{perk.icon}</div>
                 <p className="text-xs font-bold text-white">{perk.label}</p>
                 <p className="text-xs text-white/40">{perk.sub}</p>
@@ -241,14 +247,14 @@ export default function ProductDetail() {
               {activeTab === 'description' && (product.description || 'No description available.')}
               {activeTab === 'details' && (
                 <ul className="space-y-2">
-                  <li>• Material: Premium Cotton Blend</li>
-                  <li>• Origin: Made in Pakistan</li>
-                  <li>• Care: Machine wash cold</li>
-                  <li>• Fit: Regular / Relaxed</li>
+                  <li className='flex items-center justify-center'><CircleSmall size={15}/> Material: Premium Cotton Blend</li>
+                  <li className='flex items-center justify-center'><CircleSmall size={15} /> Origin: Made in Pakistan</li>
+                  <li className='flex items-center justify-center'><CircleSmall size={15} /> Care: Machine wash cold</li>
+                  <li className='flex items-center justify-center'><CircleSmall size={15} /> Fit: Regular / Relaxed</li>
                 </ul>
               )}
               {activeTab === 'reviews' && (
-                <p>⭐ {product.rating || 'N/A'}/5 based on {product.reviews || 0} verified reviews.</p>
+                <p className='flex items-center justify-center'><Star size={15} className="text-amber-400" /> {product.rating || 'N/A'}/5 based on {product.reviews || 0} verified reviews.</p>
               )}
             </div>
           </div>

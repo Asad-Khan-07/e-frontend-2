@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getAllOrders, updateOrder } from '../../services/api'
 import { useCart, useTheme } from '../../context/context'
+import { Check, X } from 'lucide-react'
 
 const statusColors = {
   pending:    'bg-yellow-500/20 text-yellow-400 border-yellow-500/20',
@@ -19,6 +20,7 @@ export default function AdminOrders() {
   const [selected, setSelected] = useState(null)
   const { convertToUSD } = useCart()
   const { theme } = useTheme()
+  const isLight = theme === 'light'
 
   useEffect(() => { load() }, [])
 
@@ -75,7 +77,7 @@ export default function AdminOrders() {
           {filtered.map(order => (
             <div
               key={order._id}
-              className="bg-white/5 border border-white/10 hover:border-white/20 rounded-2xl p-5 cursor-pointer transition-all"
+              className={`bg-white/5 border shadow-2xl ${isLight ? 'shadow-slate-300' : 'shadow-amber-300'} hover:-translate-y-0.5  border-white/10 hover:border-white/20 rounded-2xl p-5 cursor-pointer transition-all`}
               onClick={() => setSelected(order)}
             >
               <div className="flex items-center justify-between">
@@ -86,8 +88,10 @@ export default function AdminOrders() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className={`text-xs font-bold px-3 py-1 rounded-full border ${order.paymentStatus === 'paid' ? 'bg-green-500/20 text-green-400 border-green-500/20' : 'bg-red-500/20 text-red-400 border-red-500/20'}`}>
-                    {order.paymentStatus === 'paid' ? '✓ Paid' : '✗ Unpaid'}
+                  <span className={`text-xs font-bold px-3 py-1 rounded-full border flex items-center gap-1 ${order.paymentStatus === 'paid' ? 'bg-green-500/20 text-green-400 border-green-500/20' : 'bg-red-500/20 text-red-400 border-red-500/20'}`}>
+                    {order.paymentStatus === 'paid'
+                      ? <><Check size={11} strokeWidth={3} /> Paid</>
+                      : <><X size={11} strokeWidth={3} /> Unpaid</>}
                   </span>
                   <span className={`text-xs font-bold px-3 py-1 rounded-full border ${statusColors[order.status]}`}>
                     {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
@@ -116,7 +120,9 @@ export default function AdminOrders() {
                 <h3 className="font-bold">Order Detail</h3>
                 <p className="text-amber-400 text-sm font-mono">#{selected._id.slice(-8).toUpperCase()}</p>
               </div>
-              <button onClick={() => setSelected(null)} className="text-white/40 hover:text-white text-xl">✕</button>
+              <button onClick={() => setSelected(null)} className="text-white/40 hover:text-white">
+                <X size={20} />
+              </button>
             </div>
             <div className="p-6 space-y-4">
               {/* Customer info */}
@@ -163,13 +169,15 @@ export default function AdminOrders() {
                 </div>
                 <button
                   onClick={() => handlePaymentToggle(selected._id, selected.paymentStatus)}
-                  className={`mt-3 w-full py-2 rounded-xl text-xs font-bold transition-all border ${
+                  className={`mt-3 w-full py-2 rounded-xl text-xs font-bold transition-all border flex items-center justify-center gap-1.5 ${
                     selected.paymentStatus === 'paid'
                       ? 'bg-green-500/20 border-green-500/20 text-green-400'
                       : 'bg-white/5 border-white/10 text-white/40 hover:text-white'
                   }`}
                 >
-                  {selected.paymentStatus === 'paid' ? '✓ Mark as Unpaid' : 'Mark as Paid'}
+                  {selected.paymentStatus === 'paid'
+                    ? <><Check size={12} strokeWidth={3} /> Mark as Unpaid</>
+                    : <><X size={12} strokeWidth={3} /> Mark as Paid</>}
                 </button>
               </div>
             </div>

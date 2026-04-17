@@ -34,7 +34,7 @@ export default function AdminLogin() {
     <div className={`min-h-screen ${theme === 'light' ? 'bg-slate-50' : 'bg-[#0a0a0a]'} flex items-center justify-center px-4`}>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <span className="text-3xl font-black text-amber-400">LUXE<span className={theme === 'light' ? 'text-slate-900' : 'text-white'}>ADMIN</span></span>
+          <span className="text-3xl font-black text-amber-400">Mega<span className={theme === 'light' ? 'text-slate-900' : 'text-white'}>Mix</span></span>
           <p className={`text-white/40 mt-2 text-sm ${theme === 'light' ? 'text-slate-500' : ''}`}>Admin Panel Login</p>
         </div>
 
@@ -72,7 +72,7 @@ export default function AdminLogin() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full mt-6 bg-amber-400 hover:bg-amber-300 disabled:opacity-50 text-black font-bold py-3 rounded-xl transition-colors"
+            className="w-full mt-6 bg-amber-400 shadow-2xl shadow-amber-400 hover:shadow-amber-300 hover:bg-amber-300 disabled:opacity-50 text-black font-bold py-3 rounded-xl transition-colors"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
