@@ -213,9 +213,11 @@ function CheckoutForm() {
   return (
     <main className="pt-24 pb-20 max-w-7xl mx-auto px-6">
       {/* Progress */}
-      <div className="flex items-center justify-center mb-12">
+      <div className="flex items-center justify-between mb-12 flex-wrap">
+<h1>Checkout</h1>
+<div className='flex'>
         {steps.map((s, i) => (
-          <div key={s} className="flex items-center">
+          <div key={s} className="flex  w-20 md:w-full items-center">
             <button onClick={() => i < step && setStep(i)} className="flex flex-col items-center gap-1">
               <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${i < step ? 'bg-green-500 text-white' : i === step ? 'bg-amber-400 text-black' : 'bg-white/10 text-white/30'}`}>
                 {i < step ? <CheckLine /> : i + 1}
@@ -225,6 +227,10 @@ function CheckoutForm() {
             {i < steps.length - 1 && <div className={`w-16 sm:w-24 h-px mx-2 transition-all ${i < step ? 'bg-green-500' : 'bg-white/10'}`} />}
           </div>
         ))}
+
+</div>
+
+
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

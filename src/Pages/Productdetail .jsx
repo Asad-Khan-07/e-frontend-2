@@ -119,13 +119,31 @@ export default function ProductDetail() {
               {discount > 0 && (
                 <span className="bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full">-{discount}% OFF</span>
               )}
+
+              
             </div>
+
+            
+          </div>
+          
+          <div className="grid grid-cols-3 gap-3 mb-8">
+            {[
+              { icon: <Truck />, label: 'Free Delivery', sub: 'Over $7.14' },
+              { icon: <Undo2 />, label: 'Easy Returns', sub: '30-day policy' },
+              { icon: <Lock />, label: 'Secure Pay', sub: '100% safe' },
+            ].map((perk) => (
+              <div key={perk.label} className="bg-white/5 rounded-xl p-3 text-center border flex flex-col items-center border-white/5">
+                <div className="text-xl mb-1">{perk.icon}</div>
+                <p className="text-xs font-bold text-white">{perk.label}</p>
+                <p className="text-xs text-white/40">{perk.sub}</p>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div>
-          <p className="text-amber-400 text-sm font-medium tracking-widest uppercase mb-2">{product.category}</p>
-          <h1 className="text-4xl font-black mb-4">{product.name}</h1>
+        <div className=''>
+          <p className="text-amber-400 text-sm text-start font-medium tracking-widest uppercase mb-2">{product.category}</p>
+          <h1 className="text-4xl font-black mb-4 text-start">{product.name}</h1>
 
           {product.rating && (
             <div className="flex items-center gap-3 mb-6">
@@ -217,19 +235,6 @@ export default function ProductDetail() {
             </button>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 mb-8">
-            {[
-              { icon: <Truck />, label: 'Free Delivery', sub: 'Over $7.14' },
-              { icon: <Undo2 />, label: 'Easy Returns', sub: '30-day policy' },
-              { icon: <Lock />, label: 'Secure Pay', sub: '100% safe' },
-            ].map((perk) => (
-              <div key={perk.label} className="bg-white/5 rounded-xl p-3 text-center border flex flex-col items-center border-white/5">
-                <div className="text-xl mb-1">{perk.icon}</div>
-                <p className="text-xs font-bold text-white">{perk.label}</p>
-                <p className="text-xs text-white/40">{perk.sub}</p>
-              </div>
-            ))}
-          </div>
 
           <div className="border-t border-white/10 pt-6">
             <div className="flex gap-6 mb-4">

@@ -10,8 +10,8 @@ html[data-theme='light'] body {
   color: #0f172a;
 }
 
-html[data-theme='light'] .text-white,
-html[data-theme='light'] [class*="text-white/"] {
+html[data-theme='light'] .text-white:not(.force-white),
+html[data-theme='light'] [class*="text-white/"]:not(.force-white) {
   color: #0f172a !important;
 }
 
@@ -52,7 +52,6 @@ body {
 }
 
 #root {
-  /* width: 1126px; */
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
@@ -109,12 +108,10 @@ code {
   background: var(--code-bg);
 }
 
-
 .nav-link {
   position: relative;
   text-decoration: none;
-  /* color: #000; */
-  padding-bottom: 5px; /* Space for the line */
+  padding-bottom: 5px;
 }
 
 .nav-link::after {

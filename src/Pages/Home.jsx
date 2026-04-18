@@ -41,27 +41,24 @@ function ProductCard({ product }) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           
-          {/* Badge */}
           {product.badge && (
             <span className="absolute top-3 left-3 bg-amber-400 text-black text-xs font-bold px-2 py-1 rounded-full">
               {product.badge}
             </span>
           )}
           
-          {/* Discount Badge */}
           <span className="absolute top-3 right-3 flex items-center justify-center bg-red-500/90 text-white text-xs font-bold px-2 py-1 rounded-full">
             -{discount}<Percent size={20} />
           </span>
           
-          {/* Quick Add Button - Shows on hover */}
-          <div className="absolute bottom-3 left-3 right-3 translate-y-20 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+          <div className="absolute bottom-3 left-3 right-3 -translate-y-20 group-hover:-translate-y-35 opacity-0 group-hover:opacity-100 transition-all duration-300">
             <button className="w-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm py-2 rounded-xl transition-colors">
               Quick Add
             </button>
           </div>
         </div>
         
-        {/* Details Overlay - Only visible on hover */}
+        {/* Details Overlay */}
         <div className={`absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-all duration-500 ${
           isLight 
             ? 'bg-white/95 backdrop-blur-sm' 
@@ -72,8 +69,7 @@ function ProductCard({ product }) {
             {product.name}
           </h3>
           
-          {/* Price */}
-          <div className="flex items-center gap-2 mt-2">
+          <div className="flex items-center gap-2 mt-2 justify-center">
             <span className={`font-bold flex items-center gap-1 ${isLight ? 'text-amber-500' : 'text-amber-400'}`}>
               <DollarSign size={15} />{convertToUSD(product.price).toFixed(2)}
             </span>
@@ -82,8 +78,7 @@ function ProductCard({ product }) {
             </span>
           </div>
           
-          {/* Rating */}
-          <div className="flex items-center gap-1 mt-2">
+          <div className="flex items-center gap-1 mt-2 justify-center">
             <div className="flex">
               {[...Array(5)].map((_, i) => (
                 <Star 
@@ -162,10 +157,10 @@ export default function Home() {
 
         <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
           {[
-            { label: 'Clothing', image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&q=80' },
-            { label: 'Footwear', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80' },
+            { label: 'Clothing',    image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400&q=80' },
+            { label: 'Footwear',    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80' },
             { label: 'Accessories', image: 'https://images.unsplash.com/photo-1576053139778-7e32f2ae3cfd?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YWNjZXNzb3JpZXN8ZW58MHwwfDB8fHww' },
-            { label: 'Bags', image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80' },
+            { label: 'Bags',        image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80' },
           ].map((cat) => (
             <Link
               key={cat.label}
@@ -177,8 +172,23 @@ export default function Home() {
                 alt={cat.label}
                 className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-              <p className="absolute bottom-3 left-4 font-bold text-base text-white">{cat.label}</p>
+
+              {/* Dark overlays — inline styles so CSS global rules can't interfere */}
+              <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)' }} />
+
+              {/* force-white bypasses the global light mode text-white override */}
+              <p
+                className="force-white absolute bottom-3 left-4 font-bold text-base"
+                style={{
+                  color: '#ffffff',
+                  textShadow: '0 0 8px rgba(0,0,0,1), 0 2px 6px rgba(0,0,0,1)',
+                  zIndex: 10,
+                  margin: 0,
+                }}
+              >
+                {cat.label}
+              </p>
             </Link>
           ))}
         </div>
