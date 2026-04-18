@@ -7,7 +7,7 @@ export default function Navbar() {
   const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem('user') || 'null')
   const navBg = theme === 'dark' ? 'bg-[#0a0a0a]/80 border-white/10 text-white' : 'bg-white/90 border-slate-200 text-slate-900'
-  const linkText = theme === 'dark' ? 'text-black hover:text-slate-100' : 'text-black hover:text-white/80'
+  const linkText = theme === 'dark' ? 'text-black ' : 'text-black '
 
   return (
     <nav className={`sticky top-0 z-50 ${navBg} backdrop-blur-xl`}> 
