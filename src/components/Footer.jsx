@@ -1,5 +1,6 @@
 import { Copyright } from 'lucide-react'
 import React from 'react'
+import ShopSaleButton from './ShopeButton'
 
 function Footer() {
     return (
@@ -12,10 +13,11 @@ function Footer() {
             <span className="text-xl font-black">MEGA<span className="text-amber-400">.</span></span>
           </div>
           <p className="text-white/30 text-sm flex items-center gap-2"><Copyright size={15} /> 2026 Vault. All rights reserved.</p>
-          <div className="flex gap-6 text-white/40 text-sm">
+          <div className="flex gap-6 text-white/40 text-sm items-center">
             <a href="#" className="hover:text-white transition-colors">Privacy</a>
             <a href="#" className="hover:text-white transition-colors">Terms</a>
             <a href="#" className="hover:text-white transition-colors">Contact</a>
+            <ShopSaleButton/>
           </div>
         </div>
       </footer>
