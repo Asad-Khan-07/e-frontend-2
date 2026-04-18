@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { products } from '../data/products'
 import Footer from '../components/Footer'
-import { useCart } from '../context/context'
+import { useCart, useTheme } from '../context/context'
 import ShopSaleButton from '../components/ShopeButton'
 
 const allCategories = Object.values(
@@ -26,6 +26,9 @@ const categoryStyles = {
 
 export default function Categories() {
   const { convertToUSD } = useCart()
+  const { theme } = useTheme()
+  const isLight = theme === 'light'
+
   return (
     <main className="min-h-screen">
 
@@ -58,7 +61,7 @@ export default function Categories() {
                 to={`/products?category=${product.category}`}
                 className="group block"
               >
-                <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${style.color} border ${style.border} hover:scale-[1.02] transition-all duration-300`}>
+                <div className={`relative overflow-hidden  ${isLight ? 'hover:shadow-[0_0_15px_5px_#62748e]' : 'hover:shadow-[0_0_15px_5px_#fcd34d]'} rounded-2xl bg-gradient-to-br ${style.color} border ${style.border} hover:scale-[1.02] transition-all duration-300`}>
 
                   {/* Image */}
                   <div className="relative h-52 overflow-hidden">

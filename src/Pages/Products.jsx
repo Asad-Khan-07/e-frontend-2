@@ -27,7 +27,7 @@ function ProductCard({ product }) {
 
   return (
     <Link to={`/products/${product._id}`} className="group block">
-      <div className={`relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 hover:border-amber-400/40 transition-all duration-500 hover:-translate-y-1 ${isLight ? 'hover:shadow-[0_0_15px_5px_#000000]' : 'hover:shadow-[0_0_15px_5px_#fcd34d]'} `}>
+      <div className={`relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 hover:border-amber-400/40 transition-all duration-500  hover:-translate-y-1 ${isLight ? 'hover:shadow-[0_0_15px_5px_#62748e]' : 'hover:shadow-[0_0_15px_5px_#fcd34d]'} `}>
         <div className="relative h-64 overflow-hidden">
           <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

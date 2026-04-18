@@ -29,7 +29,7 @@ function ProductCard({ product }) {
 
     return (
     <Link to={`/products/${product.id}`} className="group block">
-      <div className={`relative overflow-hidden rounded-2xl ${isLight ? 'hover:shadow-[0_0_15px_5px_#000000]' : 'hover:shadow-[0_0_15px_5px_#fcd34d]'}  bg-white/5 border border-white/10 hover:border-amber-400/40 transition-all duration-500 hover:-translate-y-1`}>
+      <div className={`relative overflow-hidden rounded-2xl ${isLight ? 'hover:shadow-[0_0_15px_5px_#62748e]' : 'hover:shadow-[0_0_15px_5px_#fcd34d]'}  bg-white/5 border border-white/10 hover:border-amber-400/40 transition-all duration-500 hover:-translate-y-1`}>
         <div className="relative h-64 overflow-hidden">
           <img
             src={product.image}

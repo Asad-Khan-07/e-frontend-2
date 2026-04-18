@@ -118,8 +118,8 @@ export default function AdminLayout() {
             {navItems.find(n => isActive(n.path, n.exact))?.label || 'Admin Panel'}
           </h1>
           {stats && (
-            <div className={`flex items-center gap-4 text-sm ${theme === 'light' ? 'text-slate-600' : 'text-white/40'}`}>
-              <span className="flex items-center gap-1.5">
+            <div className={`flex items-center gap-4  text-sm ${theme === 'light' ? 'text-slate-600' : 'text-white/40'}`}>
+              <span className="flex items-center gap-1.5 shadow-2xl shadow-amber-300">
                 <Package className="w-4 h-4" />
                 {stats.totalProducts} products
               </span>
