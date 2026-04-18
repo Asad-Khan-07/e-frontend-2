@@ -196,7 +196,7 @@ export default function Categories() {
       </section>
 
       {/* Banner */}
-      <section className="py-12 max-w-7xl mx-auto px-6">
+      {/* <section className="py-12 max-w-7xl mx-auto px-6">
         <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-amber-400 to-orange-500 p-12 md:p-16">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-white blur-3xl" />
@@ -210,7 +210,7 @@ export default function Categories() {
             <ShopSaleButton />
           </div>
         </div>
-      </section>
+      </section> */}
 
       <Footer />
     </main>
