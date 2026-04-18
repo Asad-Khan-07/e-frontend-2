@@ -1,10 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useTheme } from '../context/context';
 
 const ShopSaleButton = () => {
+    const { theme } = useTheme()
+    const isLight = theme === 'light'
+  
   return (
-    <StyledWrapper>
+    <StyledWrapper $isLight={isLight}>
       <Link to="/products">
         <div className="svg-wrapper-1">
           <div className="svg-wrapper">
@@ -24,8 +28,8 @@ const StyledWrapper = styled.div`
   a {
     font-family: inherit;
     font-size: 20px;
-    background: #0f172a;
-    color: white;
+    background: ${props => props.$isLight ? '#0f172a' : 'white'};
+    color: ${props => props.$isLight ? 'white' : '#0f172a'};
     padding: 0.7em 1em;
     padding-left: 0.9em;
     display: flex;
