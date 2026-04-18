@@ -9,14 +9,12 @@ import { DollarSign, Percent, Star } from 'lucide-react'
 import ShopSaleButton from '../components/ShopeButton'
 
 function SkeletonCard() {
+  const { theme } = useTheme()
+  const isLight = theme === 'light'
+  
   return (
-    <div className="rounded-2xl bg-white/5 border border-white/10 overflow-hidden animate-pulse">
-      <div className="h-64 bg-white/10" />
-      <div className="p-4 space-y-3">
-        <div className="h-3 bg-white/10 rounded w-1/3" />
-        <div className="h-4 bg-white/10 rounded w-2/3" />
-        <div className="h-4 bg-white/10 rounded w-1/4" />
-      </div>
+    <div className={`rounded-2xl overflow-hidden animate-pulse ${isLight ? 'bg-slate-200 border border-slate-300' : 'bg-slate-800 border border-slate-700'}`}>
+      <div className={`h-96 ${isLight ? 'bg-slate-300' : 'bg-slate-700'}`} />
     </div>
   )
 }
@@ -29,7 +27,12 @@ function ProductCard({ product }) {
 
   return (
     <Link to={`/products/${product.id}`} className="group block">
-      <div className={`relative overflow-hidden rounded-2xl ${isLight ? 'hover:shadow-[0_0_15px_5px_#62748e]' : 'hover:shadow-[0_0_15px_5px_#fcd34d]'}  bg-white/5 border border-white/10 hover:border-amber-400/40 transition-all duration-500 hover:-translate-y-1`}>
+      <div className={`relative overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-1 ${
+        isLight 
+          ? 'hover:shadow-[0_0_15px_5px_#62748e]' 
+          : 'hover:shadow-[0_0_15px_5px_#fcd34d]'
+      }`}>
+        {/* Main Image */}
         <div className="relative h-96 overflow-hidden">
           <img
             src={product.image}
@@ -37,37 +40,60 @@ function ProductCard({ product }) {
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          
+          {/* Badge */}
           {product.badge && (
             <span className="absolute top-3 left-3 bg-amber-400 text-black text-xs font-bold px-2 py-1 rounded-full">
               {product.badge}
             </span>
           )}
+          
+          {/* Discount Badge */}
           <span className="absolute top-3 right-3 flex items-center justify-center bg-red-500/90 text-white text-xs font-bold px-2 py-1 rounded-full">
             -{discount}<Percent size={20} />
           </span>
-          <div className="absolute bottom-3 left-3 right-3 -translate-y-20 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+          
+          {/* Quick Add Button - Shows on hover */}
+          <div className="absolute bottom-3 left-3 right-3 translate-y-20 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
             <button className="w-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm py-2 rounded-xl transition-colors">
               Quick Add
             </button>
           </div>
         </div>
-        <div className="p-4 text-start transition-all duration-300 translate-y-30 group-hover:translate-y-0 ">
-          <p className="text-white/40 text-xs mb-1">{product.category}</p>
-          <h3 className="font-bold text-white group-hover:text-amber-400 transition-colors">{product.name}</h3>
+        
+        {/* Details Overlay - Only visible on hover */}
+        <div className={`absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-all duration-500 ${
+          isLight 
+            ? 'bg-white/95 backdrop-blur-sm' 
+            : 'bg-black/95 backdrop-blur-sm'
+        }`}>
+          <p className={`text-xs mb-1 ${isLight ? 'text-slate-500' : 'text-white/40'}`}>{product.category}</p>
+          <h3 className={`font-bold transition-colors ${isLight ? 'text-slate-900 group-hover:text-amber-500' : 'text-white group-hover:text-amber-400'}`}>
+            {product.name}
+          </h3>
+          
+          {/* Price */}
           <div className="flex items-center gap-2 mt-2">
-            <span className="text-amber-400 font-bold flex items-center gap-1"><DollarSign size={15} />{convertToUSD(product.price).toFixed(2)}</span>
-            <span className="text-white/30 text-sm line-through flex items-center gap-1"><DollarSign size={15} />{convertToUSD(product.originalPrice).toFixed(2)}</span>
+            <span className={`font-bold flex items-center gap-1 ${isLight ? 'text-amber-500' : 'text-amber-400'}`}>
+              <DollarSign size={15} />{convertToUSD(product.price).toFixed(2)}
+            </span>
+            <span className={`text-sm line-through flex items-center gap-1 ${isLight ? 'text-slate-400' : 'text-white/30'}`}>
+              <DollarSign size={15} />{convertToUSD(product.originalPrice).toFixed(2)}
+            </span>
           </div>
+          
+          {/* Rating */}
           <div className="flex items-center gap-1 mt-2">
             <div className="flex">
               {[...Array(5)].map((_, i) => (
-                // <svg key={i} className={`w-3 h-3 ${i < Math.floor(product.rating) ? 'text-amber-400' : 'text-white/20'}`} fill="currentColor" viewBox="0 0 20 20">
-                //   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                // </svg>
-                <Star key={i} className={`w-3 h-3 ${i < Math.floor(product.rating) ? 'text-amber-400' : 'text-white/20'}`} />
+                <Star 
+                  key={i} 
+                  className={`w-3 h-3 ${i < Math.floor(product.rating) ? 'text-amber-400' : isLight ? 'text-slate-300' : 'text-white/20'}`} 
+                  fill={i < Math.floor(product.rating) ? 'currentColor' : 'none'}
+                />
               ))}
             </div>
-            <span className="text-white/40 text-xs">({product.reviews})</span>
+            <span className={`text-xs ${isLight ? 'text-slate-500' : 'text-white/40'}`}>({product.reviews})</span>
           </div>
         </div>
       </div>
@@ -77,6 +103,8 @@ function ProductCard({ product }) {
 
 export default function Home() {
   const [loading, setLoading] = useState(true)
+  const { theme } = useTheme()
+  const isLight = theme === 'light'
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000)
@@ -92,19 +120,17 @@ export default function Home() {
   ).slice(0, 6)
 
   return (
-    <main>
+    <main className={isLight ? 'bg-slate-50' : 'bg-slate-950'}>
       <Hero />
 
-
-
       {/* Featured Products */}
-      <section className="py-20 max-w-full px-6 ">
+      <section className="py-20 max-w-full px-6">
         <div className="flex flex-col items-center justify-between mb-12">
           <div>
             <p className="text-amber-400 text-lg font-medium tracking-widest uppercase mb-2">Trending Now</p>
-            <h1 className="text-4xl font-black">Featured Products</h1>
+            <h1 className={`text-4xl font-black ${isLight ? 'text-slate-900' : 'text-white'}`}>Featured Products</h1>
           </div>
-          <Link to="/products" className="group text-white/50 hover:text-amber-400 text-sm font-medium flex items-center gap-1 transition-colors">
+          <Link to="/products" className={`group text-sm font-medium flex items-center gap-1 transition-colors ${isLight ? 'text-slate-500 hover:text-amber-500' : 'text-white/50 hover:text-amber-400'}`}>
             View All
             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -121,13 +147,12 @@ export default function Home() {
 
       {/* Category Images */}
       <section className="py-20 max-w-7xl mx-auto px-6">
-
         <div className="flex flex-col items-center justify-center mb-12">
           <div>
             <p className="text-amber-400 text-lg font-medium tracking-widest uppercase mb-2">Trending Now</p>
-            <h1 className="text-[50px] ">Featured Categories</h1>
+            <h1 className={`text-[50px] ${isLight ? 'text-slate-900' : 'text-white'}`}>Featured Categories</h1>
           </div>
-          <Link to="/products" className="group text-white/50 hover:text-amber-400 text-sm font-medium flex items-center gap-1 transition-colors">
+          <Link to="/products" className={`group text-sm font-medium flex items-center gap-1 transition-colors ${isLight ? 'text-slate-500 hover:text-amber-500' : 'text-white/50 hover:text-amber-400'}`}>
             View All
             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -153,20 +178,19 @@ export default function Home() {
                 className="w-full h-40 object-cover group-hover:scale-110 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-              <p className="absolute bottom-3 left-4 font-bold text-base" style={{ color: '#fff' }}>{cat.label}</p>
+              <p className="absolute bottom-3 left-4 font-bold text-base text-white">{cat.label}</p>
             </Link>
           ))}
         </div>
       </section>
 
-
       {/* Categories Products */}
-      <section className="py-20 max-w-full px-6 ">
+      <section className="py-20 max-w-full px-6">
         <div className="flex items-center flex-col justify-between mb-12 pb-4">
-          <div >
-            <h1 className="text-4xl font-black text-center">Categories</h1>
+          <div>
+            <h1 className={`text-4xl font-black text-center ${isLight ? 'text-slate-900' : 'text-white'}`}>Categories</h1>
           </div>
-          <Link to="/categories" className="group  text-white/50 hover:text-amber-400 text-sm font-medium flex items-center gap-1 transition-colors">
+          <Link to="/categories" className={`group text-sm font-medium flex items-center gap-1 transition-colors ${isLight ? 'text-slate-500 hover:text-amber-500' : 'text-white/50 hover:text-amber-400'}`}>
             View All
             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -180,8 +204,6 @@ export default function Home() {
           }
         </div>
       </section>
-
-      {/* Banner */}
 
       <Footer />
     </main>
