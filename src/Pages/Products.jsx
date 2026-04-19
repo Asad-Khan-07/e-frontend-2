@@ -164,7 +164,7 @@ export default function Products() {
         ) : products.length === 0 ? (
           <div className="text-center py-20 text-white/30">No products found</div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {products.map(p => <ProductCard key={p._id} product={p} />)}
           </div>
         )}
