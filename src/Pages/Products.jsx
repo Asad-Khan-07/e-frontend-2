@@ -42,7 +42,7 @@ function ProductCard({ product }) {
           <div className={`absolute inset-0 bg-gradient-to-t ${isLight ? '' : 'from-black/50 to-transparent'}`} />
 
           {/* Hover: stronger gradient */}
-          <div className={`absolute inset-0 bg-gradient-to-t ${isLight ? 'from-white/95 via-white/60 to-transparent' : 'from-black/90 via-black/40 to-transparent'} opacity-0 group-hover:opacity-100 transition-opacity duration-400`} />
+          <div className={`absolute inset-0 bg-gradient-to-t ${isLight ? 'bg-white' : 'bg-black'} h-32  -translate-y-32 group-hover:translate-y-32 transition-all   duration-400`} />
 
           {/* Badges */}
           {product.badge && (
@@ -123,7 +123,7 @@ export default function Products() {
       <div className="max-w-7xl mx-auto px-6 py-12 ">
 
         {/* Header + Search */}
-        <div className="flex flex-col md:flex-row md:items-center justify-start gap-10 mb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-evenly gap-10 mb-8">
           <h1 className="text-3xl font-black">All Products</h1>
           <input
             type="text"
@@ -135,12 +135,12 @@ export default function Products() {
         </div>
 
         {/* Category Filter */}
-        <div className=' grid grid-cols-1'>
+        <div className=' grid grid-cols-1 md:grid-cols-2'>
 
-        <div className="flex gap-2 flex-wrap mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 place-items-center gap-3 md:place-items-start md:h-56   mb-8">
           <button
             onClick={() => setActiveCategory('all')}
-            className={`px-4 py-1.5 rounded-full w-2xs text-sm font-medium transition-all ${activeCategory === 'all' ? 'bg-amber-400 text-black' : 'bg-white/5 border border-white/10 text-white/50 hover:text-white'}`}
+            className={`px-4 py-1.5 rounded-full w-52 h-10 text-sm font-medium transition-all ${activeCategory === 'all' ? 'bg-amber-400 text-black' : 'bg-white/5 border border-white/10 text-white/50 hover:text-white'}`}
           >
             All
           </button>
@@ -148,7 +148,7 @@ export default function Products() {
             <button
               key={cat._id}
               onClick={() => setActiveCategory(cat.name)}
-              className={`px-4 py-1.5 rounded-full w-2xs text-sm font-medium transition-all ${activeCategory === cat.name ? 'bg-amber-400 text-black' : 'bg-white/5 border border-white/10 text-white/50 hover:text-white'}`}
+              className={`px-4 py-1.5  rounded-full w-52 h-10 text-sm font-medium transition-all ${activeCategory === cat.name ? 'bg-amber-400 text-black' : 'bg-white/5 border border-white/10 text-white/50 hover:text-white'}`}
             >
               {cat.name}
             </button>
@@ -164,7 +164,7 @@ export default function Products() {
         ) : products.length === 0 ? (
           <div className="text-center py-20 text-white/30">No products found</div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 justify-content-center align-items-center gap-6">
             {products.map(p => <ProductCard key={p._id} product={p} />)}
           </div>
         )}

@@ -96,7 +96,7 @@ function Hero() {
                     />
                     <stat.Icon size={24} className="sm:w-7 sm:h-7 md:w-8 md:h-8" />
                   </p>
-                  <p className={`text-sm sm:text-base md:text-lg mt-1 ${isLight ? 'text-slate-500' : 'text-white/40'}`}>
+                  <p className={`count-para text-sm sm:text-base md:text-lg mt-1 ${isLight ? 'text-white' : 'text-white'}`}>
                     {stat.label}
                   </p>
                 </div>
